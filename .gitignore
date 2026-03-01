@@ -1,8 +1,7 @@
 # Dependencies
 node_modules/
 
-# Build output
-build/
+# Build output (build/ is committed so server can deploy without building)
 dist/
 out/
 
