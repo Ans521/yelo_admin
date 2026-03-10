@@ -170,11 +170,16 @@ const AllBusinesses: React.FC = () => {
     }
   };
 
-  const handleSubmitReview = async (businessId: string | number, review: string) => {
+  const handleSubmitReview = async (businessId: string | number, ratingText: string) => {
     try {
+      const rating = Number(ratingText);
+      if (Number.isNaN(rating) || rating < 0 || rating > 5) {
+        alert('Please enter a rating between 0 and 5');
+        return;
+      }
       const payload = {
-        business_id: Number(businessId),
-        review,
+        businessId: Number(businessId),
+        review: ratingText,
       };
       console.log("submit-review payload", payload);
       const response = await api.post('/submit-review', payload);

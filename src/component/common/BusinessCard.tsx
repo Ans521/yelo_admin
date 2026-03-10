@@ -58,8 +58,8 @@ export interface BusinessCardProps {
   onMarkBusiness?: (businessId: string | number, field: 'is_popular' | 'is_recent', currentValue: number) => void;
   /** Set business as verified via verify-business API */
   onVerifyBusiness?: (businessId: string | number, currentValue: number) => void;
-  /** Submit a review for a business */
-  onSubmitReview?: (businessId: string | number, review: string) => Promise<void> | void;
+  /** Submit a review / rating for a business */
+  onSubmitReview?: (businessId: string | number, rating: string) => Promise<void> | void;
 }
 
 
@@ -184,7 +184,7 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Popular</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recent</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Review</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating (0–5)</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
                   </thead>
@@ -279,14 +279,14 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                                   }}
                                   className="text-xs font-medium text-[#6362E7] hover:text-[#4f4ee0] underline"
                                 >
-                                  {row?.review ? 'Edit review' : 'Give review'}
+                                  {row?.review ? 'Edit rating' : 'Give rating'}
                                 </button>
                                 {row?.review && (
                                   <span
                                     className="text-xs text-gray-500 max-w-[180px] truncate"
                                     title={row.review}
                                   >
-                                    {row.review}
+                                    {row.review}/5
                                   </span>
                                 )}
                               </div>
@@ -374,19 +374,23 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                 </div>
               )}
 
-              {/* Review modal — inline simple overlay to submit review */}
+              {/* Review modal — inline simple overlay to submit rating */}
               {reviewModalOpen && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setReviewModalOpen(false)}>
                   <div
                     className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 space-y-4"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <h3 className="text-lg font-semibold text-gray-800">Give review</h3>
-                    <textarea
+                    <h3 className="text-lg font-semibold text-gray-800">Give rating</h3>
+                    <input
+                      type="number"
                       value={reviewText}
                       onChange={(e) => setReviewText(e.target.value)}
-                      placeholder="Write your review..."
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#6362E7] focus:border-transparent min-h-[100px]"
+                      min={0}
+                      max={5}
+                      step={0.1}
+                      placeholder="Enter rating between 0 and 5"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#6362E7] focus:border-transparent"
                     />
                     <div className="flex justify-end gap-3">
                       <button
@@ -411,7 +415,7 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                         }}
                         className="px-4 py-2 text-sm font-medium text-white bg-[#6362E7] rounded-lg hover:bg-[#4f4ee0] transition-colors"
                       >
-                        Submit review
+                        Submit
                       </button>
                     </div>
                   </div>
