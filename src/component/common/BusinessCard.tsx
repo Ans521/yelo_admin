@@ -58,14 +58,19 @@ export interface BusinessCardProps {
   onMarkBusiness?: (businessId: string | number, field: 'is_popular' | 'is_recent', currentValue: number) => void;
   /** Set business as verified via verify-business API */
   onVerifyBusiness?: (businessId: string | number, currentValue: number) => void;
+  /** Submit a review for a business */
+  onSubmitReview?: (businessId: string | number, review: string) => Promise<void> | void;
 }
 
 
-const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isLoading, handleDelete, onMarkBusiness, onVerifyBusiness }: BusinessCardProps) => {
+const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isLoading, handleDelete, onMarkBusiness, onVerifyBusiness, onSubmitReview }: BusinessCardProps) => {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [servicesModalOpen, setServicesModalOpen] = useState(false);
   const [servicesList, setServicesList] = useState<string[]>([]);
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [reviewBusinessId, setReviewBusinessId] = useState<string | number | null>(null);
+  const [reviewText, setReviewText] = useState('');
   
   const openGallery = (gallery: string[] | undefined) => {
     setGalleryImages(Array.isArray(gallery) ? gallery : []);
@@ -179,6 +184,7 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Popular</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recent</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Review</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
                   </thead>
@@ -262,6 +268,31 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                             )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
+                            {onSubmitReview && (
+                              <div className="flex flex-col gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setReviewBusinessId(businessId);
+                                    setReviewText(row?.review ?? '');
+                                    setReviewModalOpen(true);
+                                  }}
+                                  className="text-xs font-medium text-[#6362E7] hover:text-[#4f4ee0] underline"
+                                >
+                                  {row?.review ? 'Edit review' : 'Give review'}
+                                </button>
+                                {row?.review && (
+                                  <span
+                                    className="text-xs text-gray-500 max-w-[180px] truncate"
+                                    title={row.review}
+                                  >
+                                    {row.review}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               {handleDelete && (
                                 <button
@@ -338,6 +369,50 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                           ))}
                         </ul>
                       )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Review modal — inline simple overlay to submit review */}
+              {reviewModalOpen && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setReviewModalOpen(false)}>
+                  <div
+                    className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 space-y-4"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <h3 className="text-lg font-semibold text-gray-800">Give review</h3>
+                    <textarea
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      placeholder="Write your review..."
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#6362E7] focus:border-transparent min-h-[100px]"
+                    />
+                    <div className="flex justify-end gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setReviewModalOpen(false);
+                          setReviewBusinessId(null);
+                          setReviewText('');
+                        }}
+                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!onSubmitReview || reviewBusinessId == null) return;
+                          await onSubmitReview(reviewBusinessId, reviewText.trim());
+                          setReviewModalOpen(false);
+                          setReviewBusinessId(null);
+                          setReviewText('');
+                        }}
+                        className="px-4 py-2 text-sm font-medium text-white bg-[#6362E7] rounded-lg hover:bg-[#4f4ee0] transition-colors"
+                      >
+                        Submit review
+                      </button>
                     </div>
                   </div>
                 </div>

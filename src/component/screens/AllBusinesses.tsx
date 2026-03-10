@@ -170,6 +170,27 @@ const AllBusinesses: React.FC = () => {
     }
   };
 
+  const handleSubmitReview = async (businessId: string | number, review: string) => {
+    try {
+      const payload = {
+        business_id: Number(businessId),
+        review,
+      };
+      console.log("submit-review payload", payload);
+      const response = await api.post('/submit-review', payload);
+      console.log("submit-review response", response);
+      if (response.status === 200 || response.status === 201) {
+        alert('Review submitted successfully');
+        await fetchBusinessList();
+      } else {
+        alert('Failed to submit review');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review');
+    }
+  };
+
   useEffect(() => {
     fetchBusinessList();
   }, []);
@@ -214,6 +235,7 @@ const AllBusinesses: React.FC = () => {
     handleDelete,
     onMarkBusiness: handleMarkBusiness,
     onVerifyBusiness: handleVerifyBusiness,
+    onSubmitReview: handleSubmitReview,
   };
 
   return (

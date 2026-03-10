@@ -15,12 +15,10 @@ const BannerCategory: React.FC = () => {
 
   const [banner, setBanner] = useState<{
     imageUrl: string | null;
-    tittle?: string;
-    message?: string
+    link?: string;
   }>({
     imageUrl: null,
-    tittle: '',
-    message: ''
+    link: ''
   });
 
 
@@ -60,17 +58,15 @@ const BannerCategory: React.FC = () => {
   const handleUploadBanners = async () => {
     try {
       const bannerData = {
-        tittle: banner.tittle,
-        message: banner.message,
+        link: banner.link,
         imageUrl: banner.imageUrl
       };
       
-      console.log("bannerData", bannerData);
       const response: any = await api.post('/add-banner', { data : bannerData });
       console.log("response", response);  
       if (response.status === 200 || response.status === 201) {
         alert("Banner added successfully");
-        setBanner({ imageUrl: null, tittle: '', message: '' });
+        setBanner({ imageUrl: null, link: '' });
         await getBanners(); // Refresh banner list after adding
         console.log("banners", banner);
       }
@@ -138,24 +134,11 @@ const BannerCategory: React.FC = () => {
               onChange={(e) => handleFileChange(e, e.target.files?.[0] as File)}
               className="hidden"
             />
-            {/* <input
-              type="text"
-              placeholder="Enter banner link"
-              value={banner.link}
-              onChange={(e) => handleInputChange('link', e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
-            /> */}
             <input
               type="text"
-              placeholder="Enter Notification Title"
-              value={banner.tittle}
-              onChange={(e) => handleInputChange('tittle', e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
-            />
-            <textarea
-              placeholder="Enter Notification Message"
-              value={banner.message}
-              onChange={(e) => handleInputChange('message', e.target.value)}
+              placeholder="Enter the link.."
+              value={banner.link}
+              onChange={(e) => handleInputChange('link', e.target.value)}
               className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
             />
           </div>
@@ -196,11 +179,14 @@ const BannerCategory: React.FC = () => {
 
               {/* Banner Info */}
               <div className='flex flex-col gap-2'>
-                <div className="font-semibold text-gray-800">
-                  {bannerItem.tittle || 'No Title'}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {bannerItem.message || 'No Message'}
+                <div className="text-sm text-blue-600 break-all">
+                  {bannerItem.link ? (
+                    <a href={bannerItem.link} target="_blank" rel="noopener noreferrer">
+                      {bannerItem.link}
+                    </a>
+                  ) : (
+                    'No Link'
+                  )}
                 </div>
               </div>
             </div>
