@@ -16,7 +16,7 @@ const Sidebar: React.FC = () => {
     <div className="w-[22%] bg-white text-black shadow-lg flex flex-col h-screen">
       
       <div className="px-3 mt-4 flex items-center justify-center">
-        <img src="/logo.png" alt="My Narayangarh" className="h-10 w-auto object-contain mix-blend-multiply" />
+        <img src="/logo.png" alt="My Narayangarh" className="h-16 w-full object-contain mix-blend-multiply drop-shadow-none" style={{ background: 'transparent' }} />
       </div>
       
       <div className="overflow-y-auto flex-1 mt-4">
