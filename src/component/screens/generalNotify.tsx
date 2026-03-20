@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../sidebar/sidebar';
 import Navbar from '../navbar/navbar';
-import axios from 'axios';
-interface Banner {
+import { api } from '../../api';
+
+interface Notification {
     id?: string | undefined,
-    tittle?: string,
+    title?: string,
     message?: string
 }
 
 const GeneralNotify: React.FC = () => {
-    const [notify, setNotify] = useState<Banner[]>([
-        { id: undefined, tittle: '', message: '' },
+    const [notify, setNotify] = useState<Notification[]>([
+        { id: undefined, title: '', message: '' },
     ]);
     const [notifyList, setNotifyList] = useState<any[]>([]);
-
-
-    const api = axios.create({
-        baseURL: 'http://82.180.144.143/api',
-    });
 
     useEffect(() => {
         getAllNotification();
@@ -37,17 +33,19 @@ const GeneralNotify: React.FC = () => {
 
     const handleNotification = async () => {
         try {
+            const { title, message } = notify[0];
 
-            const payload = notify[0]
+            if (!title?.trim() || !message?.trim()) {
+                alert('Title and message are required');
+                return;
+            }
 
-            console.log("payload", payload);
-            const response: any = await api.post('/send-notify', { data: payload });
+            const response: any = await api.post('/send-notification', { title: title.trim(), message: message.trim() });
 
             if (response.status === 200) {
                 alert(`Notification sent successfully`);
                 getAllNotification();
-                setNotify([{ id: undefined, tittle: '', message: '' }]);
-                console.log("response", notify);
+                setNotify([{ id: undefined, title: '', message: '' }]);
             }
 
         } catch (error) {
@@ -92,9 +90,9 @@ const GeneralNotify: React.FC = () => {
                     <div className="flex flex-col gap-4">
                         <input
                             type="text"
-                            placeholder="Tittle for Notification"
-                            value={notify[0].tittle}
-                            onChange={(e) => handleChange(0, 'tittle', e.target.value)}
+                            placeholder="Title for Notification"
+                            value={notify[0].title}
+                            onChange={(e) => handleChange(0, 'title', e.target.value)}
                             className="border px-3 py-2 rounded w-1/2"
                         />
                         <input
@@ -129,7 +127,7 @@ const GeneralNotify: React.FC = () => {
                         <div>
 
                             <div key={notify._id} className="border p-4 rounded-lg shadow-sm space-y-4 bg-slate-300 flex flex-col gap-2">
-                                <span className="font-bold text-gray-800">Tittle:</span> {notify.tittle}
+                                <span className="font-bold text-gray-800">Title:</span> {notify.title}
                                 <span className="font-bold text-gray-800">Message Sent in the notification:</span> {notify.message}
                             </div>
 
