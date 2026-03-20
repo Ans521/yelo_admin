@@ -15,7 +15,9 @@ const Sidebar: React.FC = () => {
   return (
     <div className="w-[22%] bg-white text-black shadow-lg flex flex-col h-screen">
       
-      <div className="px-5 mt-5 text-2xl font-semibold">Yelo_Admin</div>
+      <div className="px-3 mt-4 flex items-center justify-center">
+        <img src="/logo.png" alt="My Narayangarh" className="h-10 w-auto object-contain mix-blend-multiply" />
+      </div>
       
       <div className="overflow-y-auto flex-1 mt-4">
         <nav className="p-4 flex flex-col space-y-4">
