@@ -65,7 +65,7 @@ export interface BusinessCardProps {
 
 const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isLoading, handleDelete, onMarkBusiness, onVerifyBusiness, onSubmitReview }: BusinessCardProps) => {
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [galleryImages, setGalleryImages] = useState<any[]>([]);
   const [servicesModalOpen, setServicesModalOpen] = useState(false);
   const [servicesList, setServicesList] = useState<string[]>([]);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
@@ -334,10 +334,16 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                       {galleryImages.length === 0 ? (
                         <p className="text-gray-500 col-span-full">No images in gallery.</p>
                       ) : (
-                        galleryImages.map((url: string, i: number) => (
-                          <img key={i} src={url} alt={`Gallery ${i + 1}`} className="w-full h-48 object-cover rounded-lg" />
+                        galleryImages.map((item: { url: string; isMain: boolean }, i: number) => (
+                          <img
+                            key={i}
+                            src={item.url}
+                            alt={`Gallery ${i + 1}`}
+                            className="w-full h-48 object-cover rounded-lg"
+                          />
                         ))
-                      )}
+                      )
+                      }
                     </div>
                   </div>
                 </div>
