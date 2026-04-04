@@ -140,10 +140,10 @@ const AllBusinesses: React.FC = () => {
         console.log("payload", payload);
       const response = await api.post('/update-business-flags', payload);
       if (response.status === 200 || response.status === 201) {
-        alert(`Business added into ${field === 'is_popular' ? 'Popular' : 'Recent'} successfully`);
+        alert(`Business added into ${field === 'is_popular' ? 'Popular' : 'Newly Added'} successfully`);
         fetchBusinessList();
       } else {
-        alert(`Failed to update ${field === 'is_popular' ? 'Popular' : 'Recent'}`);
+        alert(`Failed to update ${field === 'is_popular' ? 'Popular' : 'Newly Added'}`);
       }
     } catch (error) {
       console.error('Error marking business:', error);

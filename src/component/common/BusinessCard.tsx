@@ -182,7 +182,7 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services Offered</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View Gallery</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Popular</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recent</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Newly Added</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating (0–5)</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
@@ -247,10 +247,10 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                                 type="button"
                                 onClick={() => onMarkBusiness(businessId, 'is_recent', Number(row?.is_recent) || 0)}
                                 className="flex items-center gap-1 group/star"
-                                title={isRecent ? 'Remove from Recent' : 'Mark as Recent'}
+                                title={isRecent ? 'Remove from Newly Added' : 'Mark as Newly Added'}
                               >
                                 <Star size={20} className={isRecent ? 'text-yellow-500 fill-yellow-400' : 'text-gray-300 group-hover/star:text-yellow-400'} />
-                                <span className="text-xs font-medium text-gray-600">Recent</span>
+                                <span className="text-xs font-medium text-gray-600">Newly Added</span>
                               </button>
                             )}
                           </td>
