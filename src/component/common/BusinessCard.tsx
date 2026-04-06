@@ -178,7 +178,8 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subcategory</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Email</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Phone No.</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Owner Phone No.</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Business Phone No.</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services Offered</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View Gallery</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Popular</th>
@@ -206,6 +207,7 @@ const BusinessCard = ({ tittle, subtittle, modal, pagination, filters, list, isL
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row?.user_email ?? '—'}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row?.user_name ?? '—'}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row?.user_phoneno ?? '—'}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row?.business_phone_no ?? '—'}</td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {Array.isArray(row?.services_offered) && row.services_offered.length > 0 ? (
                               <button
